@@ -762,6 +762,9 @@
         }
       },
       "SharedLibrary/1.0.0": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore.Relational": "8.0.0"
+        },
         "runtime": {
           "SharedLibrary.dll": {
             "assemblyVersion": "1.0.0.0",

@@ -140,3 +140,4 @@ C:\Users\nbora\source\repos\API\BasketApi\obj\Debug\net8.0\refint\BasketApi.dll
 C:\Users\nbora\source\repos\API\BasketApi\obj\Debug\net8.0\BasketApi.pdb
 C:\Users\nbora\source\repos\API\BasketApi\obj\Debug\net8.0\BasketApi.genruntimeconfig.cache
 C:\Users\nbora\source\repos\API\BasketApi\obj\Debug\net8.0\ref\BasketApi.dll
+C:\Users\nbora\source\repos\API\BasketApi\obj\Debug\net8.0\BasketApi.sourcelink.json

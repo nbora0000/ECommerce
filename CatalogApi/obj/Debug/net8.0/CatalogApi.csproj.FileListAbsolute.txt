@@ -140,3 +140,4 @@ C:\Users\nbora\source\repos\API\CatalogApi\obj\Debug\net8.0\refint\CatalogApi.dl
 C:\Users\nbora\source\repos\API\CatalogApi\obj\Debug\net8.0\CatalogApi.pdb
 C:\Users\nbora\source\repos\API\CatalogApi\obj\Debug\net8.0\CatalogApi.genruntimeconfig.cache
 C:\Users\nbora\source\repos\API\CatalogApi\obj\Debug\net8.0\ref\CatalogApi.dll
+C:\Users\nbora\source\repos\API\CatalogApi\obj\Debug\net8.0\CatalogApi.sourcelink.json

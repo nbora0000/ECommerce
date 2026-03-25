@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using PaymentApi.Data;
 using PaymentApi.DTOs;
-using PaymentApi.Models;
+using PaymentApi.Services;
 using SharedLibrary.Enums;
 
 namespace PaymentApi.Controllers
@@ -12,13 +10,11 @@ namespace PaymentApi.Controllers
     [Produces("application/json")]
     public class PaymentsController : ControllerBase
     {
-        private readonly PaymentDbContext _context;
-        private readonly ILogger<PaymentsController> _logger;
+        private readonly IPaymentService _paymentService;
 
-        public PaymentsController(PaymentDbContext context, ILogger<PaymentsController> logger)
+        public PaymentsController(IPaymentService paymentService)
         {
-            _context = context;
-            _logger = logger;
+            _paymentService = paymentService;
         }
 
         /// <summary>Get all payments</summary>
@@ -26,20 +22,9 @@ namespace PaymentApi.Controllers
         [ProducesResponseType(typeof(IEnumerable<PaymentResponseDto>), 200)]
         public async Task<IActionResult> GetAll([FromQuery] PaymentStatus? status, [FromQuery] int page = 1, [FromQuery] int pageSize = 20)
         {
-            var query = _context.Payments.AsQueryable();
-
-            if (status.HasValue)
-                query = query.Where(p => p.Status == status.Value);
-
-            var total = await query.CountAsync();
-            var payments = await query
-                .OrderByDescending(p => p.CreatedAt)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
-
-            Response.Headers.Append("X-Total-Count", total.ToString());
-            return Ok(payments.Select(MapToDto));
+            var (payments, totalCount) = await _paymentService.GetAllPaymentsAsync(status, page, pageSize);
+            Response.Headers.Append("X-Total-Count", totalCount.ToString());
+            return Ok(payments);
         }
 
         /// <summary>Get payment by ID</summary>
@@ -48,9 +33,9 @@ namespace PaymentApi.Controllers
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var payment = await _context.Payments.FindAsync(id);
+            var payment = await _paymentService.GetPaymentByIdAsync(id);
             if (payment is null) return NotFound(new { message = $"Payment {id} not found." });
-            return Ok(MapToDto(payment));
+            return Ok(payment);
         }
 
         /// <summary>Get all payments for a specific order</summary>
@@ -58,11 +43,8 @@ namespace PaymentApi.Controllers
         [ProducesResponseType(typeof(IEnumerable<PaymentResponseDto>), 200)]
         public async Task<IActionResult> GetByOrder(Guid orderId)
         {
-            var payments = await _context.Payments
-                .Where(p => p.OrderId == orderId)
-                .OrderByDescending(p => p.CreatedAt)
-                .ToListAsync();
-            return Ok(payments.Select(MapToDto));
+            var payments = await _paymentService.GetPaymentsByOrderIdAsync(orderId);
+            return Ok(payments);
         }
 
         /// <summary>Process a payment for an order</summary>
@@ -75,37 +57,19 @@ namespace PaymentApi.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
             if (dto.Amount <= 0) return BadRequest(new { message = "Amount must be greater than zero." });
 
-            // Check if a completed payment already exists for this order
-            var existingCompleted = await _context.Payments
-                .AnyAsync(p => p.OrderId == dto.OrderId && p.Status == PaymentStatus.Completed);
-            if (existingCompleted)
-                return Conflict(new { message = "A completed payment already exists for this order." });
-
-            // Simulate payment gateway processing
-            var transactionId = $"TXN-{Guid.NewGuid():N}".ToUpper()[..20];
-            var isSuccess = SimulateGateway(dto.Method, dto.PaymentToken);
-
-            var payment = new Payment
+            try
             {
-                OrderId = dto.OrderId,
-                Amount = dto.Amount,
-                Currency = dto.Currency,
-                Method = dto.Method,
-                Status = isSuccess ? PaymentStatus.Completed : PaymentStatus.Failed,
-                TransactionId = isSuccess ? transactionId : null,
-                FailureReason = isSuccess ? null : "Gateway declined the transaction."
-            };
+                var (payment, isSuccess) = await _paymentService.ProcessPaymentAsync(dto);
 
-            _context.Payments.Add(payment);
-            await _context.SaveChangesAsync();
+                if (!isSuccess)
+                    return UnprocessableEntity(payment); // 422 — payment created but failed
 
-            _logger.LogInformation("Payment {PaymentId} for Order {OrderId}: {Status}", payment.Id, dto.OrderId, payment.Status);
-
-            var response = MapToDto(payment);
-            if (!isSuccess)
-                return UnprocessableEntity(response); // 422 — payment created but failed
-
-            return CreatedAtAction(nameof(GetById), new { id = payment.Id }, response);
+                return CreatedAtAction(nameof(GetById), new { id = payment.Id }, payment);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new { message = ex.Message });
+            }
         }
 
         /// <summary>Refund a completed payment</summary>
@@ -115,46 +79,16 @@ namespace PaymentApi.Controllers
         [ProducesResponseType(400)]
         public async Task<IActionResult> Refund(Guid id, [FromBody] RefundPaymentDto dto)
         {
-            var payment = await _context.Payments.FindAsync(id);
-            if (payment is null) return NotFound(new { message = $"Payment {id} not found." });
-
-            if (payment.Status != PaymentStatus.Completed)
-                return BadRequest(new { message = $"Only Completed payments can be refunded. Current status: {payment.Status}." });
-
-            payment.Status = PaymentStatus.Refunded;
-            payment.RefundTransactionId = $"REF-{Guid.NewGuid():N}".ToUpper()[..20];
-            payment.RefundedAt = DateTime.UtcNow;
-            payment.UpdatedAt = DateTime.UtcNow;
-            payment.FailureReason = dto.Reason;
-
-            await _context.SaveChangesAsync();
-
-            _logger.LogInformation("Payment {PaymentId} refunded. RefundTxn: {RefundTxn}", id, payment.RefundTransactionId);
-            return Ok(MapToDto(payment));
+            try
+            {
+                var payment = await _paymentService.RefundPaymentAsync(id, dto);
+                if (payment is null) return NotFound(new { message = $"Payment {id} not found." });
+                return Ok(payment);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
-
-        /// <summary>Simulate payment gateway — replace with real gateway SDK in production</summary>
-        private static bool SimulateGateway(PaymentMethod method, string? token)
-        {
-            // CashOnDelivery always succeeds; others require a token
-            if (method == PaymentMethod.CashOnDelivery) return true;
-            return !string.IsNullOrWhiteSpace(token);
-        }
-
-        private static PaymentResponseDto MapToDto(Payment p) => new()
-        {
-            Id = p.Id,
-            OrderId = p.OrderId,
-            Amount = p.Amount,
-            Currency = p.Currency,
-            Status = p.Status,
-            Method = p.Method.ToString(),
-            TransactionId = p.TransactionId,
-            FailureReason = p.FailureReason,
-            RefundTransactionId = p.RefundTransactionId,
-            RefundedAt = p.RefundedAt,
-            CreatedAt = p.CreatedAt,
-            UpdatedAt = p.UpdatedAt
-        };
     }
 }

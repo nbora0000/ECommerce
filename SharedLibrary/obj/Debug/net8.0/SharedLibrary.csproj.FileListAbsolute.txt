@@ -9,3 +9,5 @@ C:\Users\nbora\source\repos\API\SharedLibrary\obj\Debug\net8.0\SharedLibrary.dll
 C:\Users\nbora\source\repos\API\SharedLibrary\obj\Debug\net8.0\refint\SharedLibrary.dll
 C:\Users\nbora\source\repos\API\SharedLibrary\obj\Debug\net8.0\SharedLibrary.pdb
 C:\Users\nbora\source\repos\API\SharedLibrary\obj\Debug\net8.0\ref\SharedLibrary.dll
+C:\Users\nbora\source\repos\API\SharedLibrary\obj\Debug\net8.0\SharedLibrary.sourcelink.json
+C:\Users\nbora\source\repos\API\SharedLibrary\obj\Debug\net8.0\SharedLibrary.csproj.AssemblyReference.cache

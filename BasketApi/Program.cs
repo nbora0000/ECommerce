@@ -1,4 +1,6 @@
 using BasketApi.Data;
+using BasketApi.Repositories;
+using BasketApi.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -12,6 +14,10 @@ builder.Services.AddDbContext<BasketDbContext>(options =>
         builder.Configuration.GetConnectionString("BasketDb"),
         sqlOptions => sqlOptions.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null)
     ));
+
+// ── Repository & Service Layer ────────────────────────────────────────────────
+builder.Services.AddScoped<IBasketRepository, BasketRepository>();
+builder.Services.AddScoped<IBasketService, BasketService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -39,6 +45,17 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<BasketDbContext>();
     db.Database.Migrate();
+
+    // ── Create/update stored procedures (idempotent) ──────────────────────
+    SharedLibrary.Data.StoredProcedureInitializer.ExecuteSql(db,
+        @"CREATE OR ALTER PROCEDURE [dbo].[sp_GetBasketByCustomerId]
+            @CustomerId NVARCHAR(450)
+          AS BEGIN SET NOCOUNT ON;
+            SELECT CustomerId FROM [dbo].[ShoppingCarts] WHERE CustomerId = @CustomerId;
+            SELECT Id, ProductId, ProductName, UnitPrice, Quantity, ShoppingCartCustomerId
+            FROM [dbo].[CartItems] WHERE ShoppingCartCustomerId = @CustomerId;
+          END;"
+    );
 }
 
 app.UseSwagger();
