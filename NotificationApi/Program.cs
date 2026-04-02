@@ -1,10 +1,11 @@
 ﻿using System.Reflection;
-using NotificationApi.Services;
+using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // ── Services ──────────────────────────────────────────────────────────────────
 builder.Services.AddControllers();
+builder.Services.AddMediatR(typeof(Program).Assembly);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -20,7 +21,7 @@ builder.Services.AddSwaggerGen(c =>
     if (File.Exists(xmlPath)) c.IncludeXmlComments(xmlPath);
 });
 
-builder.Services.AddScoped<INotificationService, NotificationService>();
+// notification handler performs logging directly; no service registration required
 
 builder.Services.AddCors(options =>
     options.AddDefaultPolicy(policy =>

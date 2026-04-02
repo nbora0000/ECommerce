@@ -1,6 +1,5 @@
 using CatalogApi.Data;
-using CatalogApi.Repositories;
-using CatalogApi.Services;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -8,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // ── Services ──────────────────────────────────────────────────────────────────
 builder.Services.AddControllers();
+builder.Services.AddMediatR(typeof(Program).Assembly);
 
 builder.Services.AddDbContext<CatalogDbContext>(options =>
     options.UseSqlServer(
@@ -16,8 +16,7 @@ builder.Services.AddDbContext<CatalogDbContext>(options =>
     ));
 
 // ── Repository & Service Layer ────────────────────────────────────────────────
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IProductService, ProductService>();
+// repository and service removed: handlers use DbContext directly
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>

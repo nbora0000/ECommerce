@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using OrderApi.DTOs;
 using OrderApi.Services;
 using SharedLibrary.Enums;
+using MediatR;
 
 namespace OrderApi.Controllers
 {
@@ -10,11 +11,11 @@ namespace OrderApi.Controllers
     [Produces("application/json")]
     public class OrdersController : ControllerBase
     {
-        private readonly IOrderService _orderService;
+        private readonly IMediator _mediator;
 
-        public OrdersController(IOrderService orderService)
+        public OrdersController(IMediator mediator)
         {
-            _orderService = orderService;
+            _mediator = mediator;
         }
 
         /// <summary>Get all orders</summary>
@@ -22,7 +23,7 @@ namespace OrderApi.Controllers
         [ProducesResponseType(typeof(IEnumerable<OrderResponseDto>), 200)]
         public async Task<IActionResult> GetAll([FromQuery] OrderStatus? status, [FromQuery] int page = 1, [FromQuery] int pageSize = 20)
         {
-            var (orders, totalCount) = await _orderService.GetAllOrdersAsync(status, page, pageSize);
+            var (orders, totalCount) = await _mediator.Send(new Features.Orders.Queries.GetAllOrdersQuery(status, page, pageSize));
             Response.Headers.Append("X-Total-Count", totalCount.ToString());
             return Ok(orders);
         }
@@ -33,7 +34,7 @@ namespace OrderApi.Controllers
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var order = await _orderService.GetOrderByIdAsync(id);
+            var order = await _mediator.Send(new Features.Orders.Queries.GetOrderByIdQuery(id));
             if (order is null) return NotFound(new { message = $"Order {id} not found." });
             return Ok(order);
         }
@@ -47,7 +48,7 @@ namespace OrderApi.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
             if (!dto.Items.Any()) return BadRequest(new { message = "Order must have at least one item." });
 
-            var order = await _orderService.CreateOrderAsync(dto);
+            var order = await _mediator.Send(new Features.Orders.Commands.CreateOrderCommand(dto));
             return CreatedAtAction(nameof(GetById), new { id = order.Id }, order);
         }
 
@@ -60,7 +61,7 @@ namespace OrderApi.Controllers
         {
             try
             {
-                var order = await _orderService.UpdateOrderAsync(id, dto);
+                var order = await _mediator.Send(new Features.Orders.Commands.UpdateOrderCommand(id, dto));
                 if (order is null) return NotFound(new { message = $"Order {id} not found." });
                 return Ok(order);
             }
@@ -79,7 +80,7 @@ namespace OrderApi.Controllers
         {
             try
             {
-                var deleted = await _orderService.DeleteOrderAsync(id);
+                var deleted = await _mediator.Send(new Features.Orders.Commands.DeleteOrderCommand(id));
                 if (!deleted) return NotFound(new { message = $"Order {id} not found." });
                 return NoContent();
             }

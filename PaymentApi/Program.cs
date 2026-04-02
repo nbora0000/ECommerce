@@ -1,13 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using PaymentApi.Data;
-using PaymentApi.Repositories;
-using PaymentApi.Services;
+using MediatR;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // ── Services ──────────────────────────────────────────────────────────────────
 builder.Services.AddControllers();
+builder.Services.AddMediatR(typeof(Program).Assembly);
 
 builder.Services.AddDbContext<PaymentDbContext>(options =>
     options.UseSqlServer(
@@ -15,9 +15,6 @@ builder.Services.AddDbContext<PaymentDbContext>(options =>
         sqlOptions => sqlOptions.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null)
     ));
 
-// ── Repository & Service Layer ────────────────────────────────────────────────
-builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
-builder.Services.AddScoped<IPaymentService, PaymentService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>

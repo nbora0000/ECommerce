@@ -152,6 +152,9 @@ C:\Users\nbora\source\repos\nbora0000\ECommerce\BasketApi\bin\Debug\net8.0\Baske
 C:\Users\nbora\source\repos\nbora0000\ECommerce\BasketApi\bin\Debug\net8.0\Azure.Core.dll
 C:\Users\nbora\source\repos\nbora0000\ECommerce\BasketApi\bin\Debug\net8.0\Azure.Identity.dll
 C:\Users\nbora\source\repos\nbora0000\ECommerce\BasketApi\bin\Debug\net8.0\Humanizer.dll
+C:\Users\nbora\source\repos\nbora0000\ECommerce\BasketApi\bin\Debug\net8.0\MediatR.dll
+C:\Users\nbora\source\repos\nbora0000\ECommerce\BasketApi\bin\Debug\net8.0\MediatR.Contracts.dll
+C:\Users\nbora\source\repos\nbora0000\ECommerce\BasketApi\bin\Debug\net8.0\MediatR.Extensions.Microsoft.DependencyInjection.dll
 C:\Users\nbora\source\repos\nbora0000\ECommerce\BasketApi\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\nbora\source\repos\nbora0000\ECommerce\BasketApi\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
 C:\Users\nbora\source\repos\nbora0000\ECommerce\BasketApi\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll

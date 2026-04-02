@@ -1,5 +1,5 @@
 using BasketApi.Models;
-using BasketApi.Services;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BasketApi.Controllers;
@@ -8,33 +8,32 @@ namespace BasketApi.Controllers;
 [Route("api/[controller]")]
 public class BasketController : ControllerBase
 {
-    private readonly IBasketService _basketService;
+    private readonly IMediator _mediator;
 
-    public BasketController(IBasketService basketService)
+    public BasketController(IMediator mediator)
     {
-        _basketService = basketService;
+        _mediator = mediator;
     }
 
     [HttpGet("{customerId}")]
     public async Task<ActionResult<ShoppingCart>> GetBasket(string customerId)
     {
-        var basket = await _basketService.GetBasketAsync(customerId);
-        return basket;
+        var basket = await _mediator.Send(new Features.Basket.Queries.GetBasketQuery(customerId));
+        return Ok(basket);
     }
 
     [HttpPost]
     public async Task<ActionResult<ShoppingCart>> UpdateBasket(ShoppingCart basket)
     {
-        var updated = await _basketService.UpdateBasketAsync(basket);
+        var updated = await _mediator.Send(new Features.Basket.Commands.UpdateBasketCommand(basket));
         return CreatedAtAction(nameof(GetBasket), new { customerId = updated.CustomerId }, updated);
     }
 
     [HttpDelete("{customerId}")]
     public async Task<IActionResult> DeleteBasket(string customerId)
     {
-        var deleted = await _basketService.DeleteBasketAsync(customerId);
+        var deleted = await _mediator.Send(new Features.Basket.Commands.DeleteBasketCommand(customerId));
         if (!deleted) return NotFound();
-
         return NoContent();
     }
 }

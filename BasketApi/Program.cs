@@ -1,6 +1,5 @@
 using BasketApi.Data;
-using BasketApi.Repositories;
-using BasketApi.Services;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -8,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // ── Services ──────────────────────────────────────────────────────────────────
 builder.Services.AddControllers();
+builder.Services.AddMediatR(typeof(Program).Assembly);
 
 builder.Services.AddDbContext<BasketDbContext>(options =>
     options.UseSqlServer(
@@ -16,8 +16,7 @@ builder.Services.AddDbContext<BasketDbContext>(options =>
     ));
 
 // ── Repository & Service Layer ────────────────────────────────────────────────
-builder.Services.AddScoped<IBasketRepository, BasketRepository>();
-builder.Services.AddScoped<IBasketService, BasketService>();
+// repository and service removed: handlers use DbContext directly
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>

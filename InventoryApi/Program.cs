@@ -1,13 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using InventoryApi.Data;
-using InventoryApi.Repositories;
-using InventoryApi.Services;
+using MediatR;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // ?? Services ??????????????????????????????????????????????????????????????????
 builder.Services.AddControllers();
+builder.Services.AddMediatR(typeof(Program).Assembly);
 
 builder.Services.AddDbContext<InventoryDbContext>(options =>
     options.UseSqlServer(
@@ -15,8 +15,7 @@ builder.Services.AddDbContext<InventoryDbContext>(options =>
         sqlOptions => sqlOptions.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null)
     ));
 
-builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
-builder.Services.AddScoped<IInventoryService, InventoryService>();
+// repository and service removed: handlers use DbContext directly
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using InventoryApi.Data;
 using InventoryApi.Models;
 using SharedLibrary.Events;
+using MediatR;
 
 namespace InventoryApi.Controllers
 {
@@ -10,27 +11,20 @@ namespace InventoryApi.Controllers
     [Route("api/[controller]")]
     public class InventoryController : ControllerBase
     {
-        private readonly InventoryDbContext _db;
+        private readonly IMediator _mediator;
         private readonly ILogger<InventoryController> _logger;
 
-        public InventoryController(InventoryDbContext db, ILogger<InventoryController> logger)
+        public InventoryController(IMediator mediator, ILogger<InventoryController> logger)
         {
-            _db = db;
+            _mediator = mediator;
             _logger = logger;
         }
 
         [HttpPost("reserve")]
         public async Task<IActionResult> Reserve([FromBody] ReserveRequest request)
         {
-            // naive reservation: find stock by product
-            var item = await _db.Stock.FirstOrDefaultAsync(s => s.ProductId == request.ProductId);
-            if (item == null || item.QuantityAvailable < request.Quantity)
-            {
-                return BadRequest("Insufficient stock");
-            }
-
-            item.QuantityAvailable -= request.Quantity;
-            await _db.SaveChangesAsync();
+            var success = await _mediator.Send(new Features.Inventory.Commands.ReserveInventoryCommand(request.ProductId, request.OrderId, request.Quantity));
+            if (!success) return BadRequest("Insufficient stock");
 
             var ev = new SharedLibrary.Events.InventoryReservedEvent
             {

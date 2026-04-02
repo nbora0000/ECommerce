@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PaymentApi.DTOs;
-using PaymentApi.Services;
 using SharedLibrary.Enums;
+using MediatR;
 
 namespace PaymentApi.Controllers
 {
@@ -10,11 +10,11 @@ namespace PaymentApi.Controllers
     [Produces("application/json")]
     public class PaymentsController : ControllerBase
     {
-        private readonly IPaymentService _paymentService;
+        private readonly IMediator _mediator;
 
-        public PaymentsController(IPaymentService paymentService)
+        public PaymentsController(IMediator mediator)
         {
-            _paymentService = paymentService;
+            _mediator = mediator;
         }
 
         /// <summary>Get all payments</summary>
@@ -22,7 +22,7 @@ namespace PaymentApi.Controllers
         [ProducesResponseType(typeof(IEnumerable<PaymentResponseDto>), 200)]
         public async Task<IActionResult> GetAll([FromQuery] PaymentStatus? status, [FromQuery] int page = 1, [FromQuery] int pageSize = 20)
         {
-            var (payments, totalCount) = await _paymentService.GetAllPaymentsAsync(status, page, pageSize);
+            var (payments, totalCount) = await _mediator.Send(new Features.Payments.Queries.GetAllPaymentsQuery(status, page, pageSize));
             Response.Headers.Append("X-Total-Count", totalCount.ToString());
             return Ok(payments);
         }
@@ -33,7 +33,7 @@ namespace PaymentApi.Controllers
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var payment = await _paymentService.GetPaymentByIdAsync(id);
+            var payment = await _mediator.Send(new Features.Payments.Queries.GetPaymentByIdQuery(id));
             if (payment is null) return NotFound(new { message = $"Payment {id} not found." });
             return Ok(payment);
         }
@@ -43,7 +43,7 @@ namespace PaymentApi.Controllers
         [ProducesResponseType(typeof(IEnumerable<PaymentResponseDto>), 200)]
         public async Task<IActionResult> GetByOrder(Guid orderId)
         {
-            var payments = await _paymentService.GetPaymentsByOrderIdAsync(orderId);
+            var payments = await _mediator.Send(new Features.Payments.Queries.GetPaymentsByOrderIdQuery(orderId));
             return Ok(payments);
         }
 
@@ -59,7 +59,7 @@ namespace PaymentApi.Controllers
 
             try
             {
-                var (payment, isSuccess) = await _paymentService.ProcessPaymentAsync(dto);
+                var (payment, isSuccess) = await _mediator.Send(new Features.Payments.Commands.ProcessPaymentCommand(dto));
 
                 if (!isSuccess)
                     return UnprocessableEntity(payment); // 422 — payment created but failed
@@ -81,7 +81,7 @@ namespace PaymentApi.Controllers
         {
             try
             {
-                var payment = await _paymentService.RefundPaymentAsync(id, dto);
+                var payment = await _mediator.Send(new Features.Payments.Commands.RefundPaymentCommand(id, dto));
                 if (payment is null) return NotFound(new { message = $"Payment {id} not found." });
                 return Ok(payment);
             }

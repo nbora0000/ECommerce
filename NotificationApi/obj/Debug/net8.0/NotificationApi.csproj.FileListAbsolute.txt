@@ -4,6 +4,9 @@ C:\Users\nbora\source\repos\nbora0000\ECommerce\NotificationApi\bin\Debug\net8.0
 C:\Users\nbora\source\repos\nbora0000\ECommerce\NotificationApi\bin\Debug\net8.0\NotificationApi.runtimeconfig.json
 C:\Users\nbora\source\repos\nbora0000\ECommerce\NotificationApi\bin\Debug\net8.0\NotificationApi.dll
 C:\Users\nbora\source\repos\nbora0000\ECommerce\NotificationApi\bin\Debug\net8.0\NotificationApi.pdb
+C:\Users\nbora\source\repos\nbora0000\ECommerce\NotificationApi\bin\Debug\net8.0\MediatR.dll
+C:\Users\nbora\source\repos\nbora0000\ECommerce\NotificationApi\bin\Debug\net8.0\MediatR.Contracts.dll
+C:\Users\nbora\source\repos\nbora0000\ECommerce\NotificationApi\bin\Debug\net8.0\MediatR.Extensions.Microsoft.DependencyInjection.dll
 C:\Users\nbora\source\repos\nbora0000\ECommerce\NotificationApi\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
 C:\Users\nbora\source\repos\nbora0000\ECommerce\NotificationApi\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
 C:\Users\nbora\source\repos\nbora0000\ECommerce\NotificationApi\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll

@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using OrderApi.Data;
-using OrderApi.Repositories;
-using OrderApi.Services;
+using MediatR;
 using OrderApi.Services.Outbox;
 using System.Reflection;
 
@@ -9,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // ── Services ──────────────────────────────────────────────────────────────────
 builder.Services.AddControllers();
+builder.Services.AddMediatR(typeof(Program).Assembly);
 
 builder.Services.AddDbContext<OrderDbContext>(options =>
     options.UseSqlServer(
@@ -20,9 +20,6 @@ builder.Services.AddDbContext<OrderDbContext>(options =>
 builder.Services.AddDbContext<OutboxDbContext>(opt => opt.UseInMemoryDatabase("OutboxDb"));
 builder.Services.AddScoped<OutboxPublisher>();
 
-// ── Repository & Service Layer ────────────────────────────────────────────────
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-builder.Services.AddScoped<IOrderService, OrderService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>

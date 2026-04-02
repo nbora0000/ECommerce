@@ -1,3 +1,4 @@
+C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\bin\Debug\net8.0\appsettings.json
 C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\bin\Debug\net8.0\UserApi.staticwebassets.endpoints.json
 C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\bin\Debug\net8.0\UserApi.exe
 C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\bin\Debug\net8.0\UserApi.deps.json
@@ -6,7 +7,11 @@ C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\bin\Debug\net8.0\UserApi
 C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\bin\Debug\net8.0\UserApi.pdb
 C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\bin\Debug\net8.0\Azure.Core.dll
 C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\bin\Debug\net8.0\Azure.Identity.dll
+C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\bin\Debug\net8.0\BCrypt.Net-Next.dll
 C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\bin\Debug\net8.0\Humanizer.dll
+C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\bin\Debug\net8.0\MediatR.dll
+C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\bin\Debug\net8.0\MediatR.Contracts.dll
+C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\bin\Debug\net8.0\MediatR.Extensions.Microsoft.DependencyInjection.dll
 C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
@@ -134,17 +139,10 @@ C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\obj\Debug\net8.0\staticw
 C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\obj\Debug\net8.0\staticwebassets.development.json
 C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\obj\Debug\net8.0\staticwebassets.build.endpoints.json
 C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\obj\Debug\net8.0\swae.build.ex.cache
+C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\obj\Debug\net8.0\UserApi.csproj.Up2Date
 C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\obj\Debug\net8.0\UserApi.dll
 C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\obj\Debug\net8.0\refint\UserApi.dll
 C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\obj\Debug\net8.0\UserApi.pdb
 C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\obj\Debug\net8.0\UserApi.genruntimeconfig.cache
 C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\obj\Debug\net8.0\ref\UserApi.dll
-C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\bin\Debug\net8.0\appsettings.json
-C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\bin\Debug\net8.0\BCrypt.Net-Next.dll
-C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\bin\Debug\net8.0\MediatR.dll
-C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\bin\Debug\net8.0\MediatR.Contracts.dll
-C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\bin\Debug\net8.0\MediatR.Extensions.Microsoft.DependencyInjection.dll
-C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
-C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
-C:\Users\nbora\source\repos\nbora0000\ECommerce\UserApi\bin\Debug\net8.0\System.Diagnostics.DiagnosticSource.dll
