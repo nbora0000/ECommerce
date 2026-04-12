@@ -68,6 +68,15 @@ msbuild*.err
 *.bak
 *.swp
 
+# VS Code
+.vscode/
+
+# Gemini/agent generated
+walkthrough.md
+
+# Duplicate solution file (keep ECommerce.sln as primary)
+Microservices.sln
+
 # OS files
 Thumbs.db
 ehthumbs.db
