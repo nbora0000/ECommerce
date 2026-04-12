@@ -1,0 +1,35 @@
+# Production Docker Compose Override
+# Usage: docker-compose -f docker-compose.yml -f docker-compose.production.yml up
+
+services:
+  api-gateway:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+
+  user-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+
+  catalog-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+
+  basket-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+
+  order-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+
+  payment-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+
+  inventory-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+
+  notification-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production

@@ -1,0 +1,35 @@
+# UAT Docker Compose Override
+# Usage: docker-compose -f docker-compose.yml -f docker-compose.uat.yml up
+
+services:
+  api-gateway:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=UAT
+
+  user-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=UAT
+
+  catalog-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=UAT
+
+  basket-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=UAT
+
+  order-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=UAT
+
+  payment-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=UAT
+
+  inventory-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=UAT
+
+  notification-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=UAT

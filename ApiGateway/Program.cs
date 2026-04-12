@@ -6,8 +6,11 @@ var builder = WebApplication.CreateBuilder(args);
 //  Add Health Checks to the Gateway itself
 builder.Services.AddHealthChecks();
 
-//  Add Ocelot Configuration
-builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
+//  Add Ocelot Configuration (environment-specific overrides)
+var environment = builder.Environment.EnvironmentName;
+builder.Configuration
+    .AddJsonFile("ocelot.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"ocelot.{environment}.json", optional: true, reloadOnChange: true);
 
 //  Add Ocelot Services
 builder.Services.AddOcelot(builder.Configuration);
