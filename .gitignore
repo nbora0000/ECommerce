@@ -1,6 +1,75 @@
-﻿################################################################################
+################################################################################
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/.vs/Microservices
+# Visual Studio
 /.vs
+.vs/
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+[Ll]og/
+[Ll]ogs/
+
+# NuGet
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+*.nupkg
+*.snupkg
+**/nuget.exe
+*.nuget.props
+*.nuget.targets
+project.lock.json
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build log
+*.log
+msbuild*.wrn
+msbuild*.err
+
+# NCrunch
+*.ncrunchsolution
+*.ncrunchsolution.user
+*.ncrunchproject
+
+# Visual Studio profiler
+*.psess
+*.vsp
+*.vspx
+*.sap
+
+# Publish profiles
+*.pubxml
+!**/[Pp]ublish[Pp]rofiles/*.pubxml
+
+# Coverage results
+*.coverage
+*.coveragexml
+
+# dotCover
+*.dotCover
+
+# Temp files
+~$*
+*~
+*.tmp
+*.bak
+*.swp
+
+# OS files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store

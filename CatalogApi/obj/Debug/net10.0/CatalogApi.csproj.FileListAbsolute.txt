@@ -1,8 +1,0 @@
-C:\Users\nbora\source\repos\API\CatalogApi\obj\Debug\net10.0\CatalogApi.csproj.AssemblyReference.cache
-C:\Users\nbora\source\repos\API\CatalogApi\obj\Debug\net10.0\rpswa.dswa.cache.json
-C:\Users\nbora\source\repos\API\CatalogApi\obj\Debug\net10.0\CatalogApi.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\nbora\source\repos\API\CatalogApi\obj\Debug\net10.0\CatalogApi.AssemblyInfoInputs.cache
-C:\Users\nbora\source\repos\API\CatalogApi\obj\Debug\net10.0\CatalogApi.AssemblyInfo.cs
-C:\Users\nbora\source\repos\API\CatalogApi\obj\Debug\net10.0\CatalogApi.csproj.CoreCompileInputs.cache
-C:\Users\nbora\source\repos\API\CatalogApi\obj\Debug\net10.0\CatalogApi.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\nbora\source\repos\API\CatalogApi\obj\Debug\net10.0\CatalogApi.MvcApplicationPartsAssemblyInfo.cache
